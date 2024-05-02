@@ -1,8 +1,10 @@
 package cmd
 
 import (
+	"log"
 	"os"
 
+	"github.com/sapher/containerhooks/internal"
 	"github.com/spf13/cobra"
 )
 
@@ -18,4 +20,14 @@ func Execute() {
 	}
 }
 
-func init() {}
+func init() {
+	cobra.OnInitialize(onInitialize)
+}
+
+func onInitialize() {
+	// Load configuration
+	_, err := internal.LoadConfig()
+	if err != nil {
+		log.Fatalln(err)
+	}
+}
